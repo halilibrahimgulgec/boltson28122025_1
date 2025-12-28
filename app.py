@@ -1515,7 +1515,7 @@ def binek_arac_analizi():
                                  arac_detaylari=[],
                                  genel_ozet={'arac_tipi': 'Binek Araç', 'toplam_arac': 0, 'toplam_yakit': 0})
 
-        # Yakıt verilerini çek
+                # Yakıt verilerini çek
         filters = {}
         if baslangic_tarihi and bitis_tarihi:
             filters['islem_tarihi'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
@@ -1525,7 +1525,7 @@ def binek_arac_analizi():
             filters['islem_tarihi'] = f'lte.{bitis_tarihi}'
 
         print(f"🔍 DEBUG - Tarih filtreleri: Başlangıç={baslangic_tarihi}, Bitiş={bitis_tarihi}")
-        print(f"🔍 DEBUG - Supabase filters: {filters}")
+        print(f"🔍 DEBUG - Bolt Database filters: {filters}")
 
         yakit_data = fetch_all_paginated('yakit', select='plaka,yakit_miktari', filters=filters)
         print(f"🔍 DEBUG - Yakıt verisi sayısı: {len(yakit_data)}")
@@ -1817,7 +1817,7 @@ def is_makinesi_analizi():
                                  arac_detaylari=[],
                                  genel_ozet={'arac_tipi': 'İş Makinesi', 'toplam_arac': 0, 'toplam_yakit': 0})
 
-        # Yakıt verilerini çek
+                # Yakıt verilerini çek
         filters = {}
         if baslangic_tarihi and bitis_tarihi:
             filters['islem_tarihi'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
