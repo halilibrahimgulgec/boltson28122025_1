@@ -161,7 +161,11 @@ def hesapla_gercek_km(plaka: str, baslangic_tarihi: str = None, bitis_tarihi: st
         url = f'{SUPABASE_URL}/rest/v1/yakit?plaka=eq.{urllib.parse.quote(plaka)}&km_bilgisi=not.is.null&order=islem_tarihi.asc'
 
         if baslangic_tarihi and bitis_tarihi:
-            url += f'&islem_tarihi=gte.{urllib.parse.quote(baslangic_tarihi)}&islem_tarihi=lte.{urllib.parse.quote(bitis_tarihi)}'
+            url += f'&islem_tarihi=and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
+        elif baslangic_tarihi:
+            url += f'&islem_tarihi=gte.{baslangic_tarihi}'
+        elif bitis_tarihi:
+            url += f'&islem_tarihi=lte.{bitis_tarihi}'
 
         req = urllib.request.Request(url)
         req.add_header('apikey', SUPABASE_KEY)
@@ -461,20 +465,24 @@ def get_muhasebe_data(baslangic_tarihi: str = None, bitis_tarihi: str = None, pl
     """Muhasebe verilerini hesapla"""
     try:
         agirlik_filters = {}
-        if baslangic_tarihi:
-            agirlik_filters['tarih'] = f'gte.{urllib.parse.quote(baslangic_tarihi)}'
-        if bitis_tarihi:
-            agirlik_filters['tarih'] = f'lte.{urllib.parse.quote(bitis_tarihi)}'
+        if baslangic_tarihi and bitis_tarihi:
+            agirlik_filters['tarih'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
+        elif baslangic_tarihi:
+            agirlik_filters['tarih'] = f'gte.{baslangic_tarihi}'
+        elif bitis_tarihi:
+            agirlik_filters['tarih'] = f'lte.{bitis_tarihi}'
         if plaka:
             agirlik_filters['plaka'] = f'eq.{urllib.parse.quote(plaka)}'
 
         agirlik_data = fetch_all_paginated('agirlik', filters=agirlik_filters)
 
         yakit_filters = {}
-        if baslangic_tarihi:
-            yakit_filters['islem_tarihi'] = f'gte.{urllib.parse.quote(baslangic_tarihi)}'
-        if bitis_tarihi:
-            yakit_filters['islem_tarihi'] = f'lte.{urllib.parse.quote(bitis_tarihi)}'
+        if baslangic_tarihi and bitis_tarihi:
+            yakit_filters['islem_tarihi'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
+        elif baslangic_tarihi:
+            yakit_filters['islem_tarihi'] = f'gte.{baslangic_tarihi}'
+        elif bitis_tarihi:
+            yakit_filters['islem_tarihi'] = f'lte.{bitis_tarihi}'
         if plaka:
             yakit_filters['plaka'] = f'eq.{urllib.parse.quote(plaka)}'
 
