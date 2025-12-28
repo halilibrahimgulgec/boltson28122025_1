@@ -1517,13 +1517,12 @@ def binek_arac_analizi():
 
         # Yakıt verilerini çek
         filters = {}
-        if baslangic_tarihi:
-            filters['islem_tarihi'] = f'gte.{urllib.parse.quote(baslangic_tarihi)}'
-        if bitis_tarihi:
-            if 'islem_tarihi' in filters:
-                filters['islem_tarihi'] = f'gte.{urllib.parse.quote(baslangic_tarihi)},lte.{urllib.parse.quote(bitis_tarihi)}'
-            else:
-                filters['islem_tarihi'] = f'lte.{urllib.parse.quote(bitis_tarihi)}'
+        if baslangic_tarihi and bitis_tarihi:
+            filters['islem_tarihi'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
+        elif baslangic_tarihi:
+            filters['islem_tarihi'] = f'gte.{baslangic_tarihi}'
+        elif bitis_tarihi:
+            filters['islem_tarihi'] = f'lte.{bitis_tarihi}'
 
         print(f"🔍 DEBUG - Tarih filtreleri: Başlangıç={baslangic_tarihi}, Bitiş={bitis_tarihi}")
         print(f"🔍 DEBUG - Supabase filters: {filters}")
@@ -1643,28 +1642,27 @@ def kargo_arac_analizi():
 
         # Yakıt verilerini çek
         yakit_filters = {}
-        if baslangic_tarihi:
-            yakit_filters['islem_tarihi'] = f'gte.{urllib.parse.quote(baslangic_tarihi)}'
-        if bitis_tarihi:
-            if 'islem_tarihi' in yakit_filters:
-                yakit_filters['islem_tarihi'] = f'gte.{urllib.parse.quote(baslangic_tarihi)},lte.{urllib.parse.quote(bitis_tarihi)}'
-            else:
-                yakit_filters['islem_tarihi'] = f'lte.{urllib.parse.quote(bitis_tarihi)}'
+        if baslangic_tarihi and bitis_tarihi:
+            yakit_filters['islem_tarihi'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
+        elif baslangic_tarihi:
+            yakit_filters['islem_tarihi'] = f'gte.{baslangic_tarihi}'
+        elif bitis_tarihi:
+            yakit_filters['islem_tarihi'] = f'lte.{bitis_tarihi}'
 
         print(f"🔍 DEBUG - Tarih filtreleri: Başlangıç={baslangic_tarihi}, Bitiş={bitis_tarihi}")
+        print(f"🔍 DEBUG - Yakıt filter: {yakit_filters}")
 
         yakit_data = fetch_all_paginated('yakit', select='plaka,yakit_miktari', filters=yakit_filters)
         print(f"🔍 DEBUG - Yakıt verisi sayısı: {len(yakit_data)}")
 
         # Ağırlık verilerini çek (agirlik tablosundan)
         agirlik_filters = {}
-        if baslangic_tarihi:
-            agirlik_filters['tarih'] = f'gte.{urllib.parse.quote(baslangic_tarihi)}'
-        if bitis_tarihi:
-            if 'tarih' in agirlik_filters:
-                agirlik_filters['tarih'] = f'gte.{urllib.parse.quote(baslangic_tarihi)},lte.{urllib.parse.quote(bitis_tarihi)}'
-            else:
-                agirlik_filters['tarih'] = f'lte.{urllib.parse.quote(bitis_tarihi)}'
+        if baslangic_tarihi and bitis_tarihi:
+            agirlik_filters['tarih'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
+        elif baslangic_tarihi:
+            agirlik_filters['tarih'] = f'gte.{baslangic_tarihi}'
+        elif bitis_tarihi:
+            agirlik_filters['tarih'] = f'lte.{bitis_tarihi}'
 
         kargo_data = fetch_all_paginated('agirlik', select='plaka,net_agirlik,birim,miktar', filters=agirlik_filters)
         print(f"🔍 DEBUG - Ağırlık verisi sayısı: {len(kargo_data)}")
@@ -1821,13 +1819,12 @@ def is_makinesi_analizi():
 
         # Yakıt verilerini çek
         filters = {}
-        if baslangic_tarihi:
-            filters['islem_tarihi'] = f'gte.{urllib.parse.quote(baslangic_tarihi)}'
-        if bitis_tarihi:
-            if 'islem_tarihi' in filters:
-                filters['islem_tarihi'] = f'gte.{urllib.parse.quote(baslangic_tarihi)},lte.{urllib.parse.quote(bitis_tarihi)}'
-            else:
-                filters['islem_tarihi'] = f'lte.{urllib.parse.quote(bitis_tarihi)}'
+        if baslangic_tarihi and bitis_tarihi:
+            filters['islem_tarihi'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
+        elif baslangic_tarihi:
+            filters['islem_tarihi'] = f'gte.{baslangic_tarihi}'
+        elif bitis_tarihi:
+            filters['islem_tarihi'] = f'lte.{bitis_tarihi}'
 
         yakit_data = fetch_all_paginated('yakit', select='plaka,yakit_miktari', filters=filters)
 
