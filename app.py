@@ -1640,7 +1640,7 @@ def kargo_arac_analizi():
                                  arac_detaylari=[],
                                  genel_ozet={'arac_tipi': 'Kargo Aracı', 'toplam_arac': 0, 'toplam_yakit': 0})
 
-        # Yakıt verilerini çek
+               # Yakıt verilerini çek
         yakit_filters = {}
         if baslangic_tarihi and bitis_tarihi:
             yakit_filters['islem_tarihi'] = f'and(gte.{baslangic_tarihi},lte.{bitis_tarihi})'
